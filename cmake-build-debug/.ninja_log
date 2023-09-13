@@ -1,0 +1,7 @@
+# ninja log v5
+4	1124	7163230543995984	CMakeFiles/cpp_project.dir/test.cpp.obj	4d7cfb59037006a1
+9	1522	7163162430530623	CMakeFiles/cpp_project.dir/main.cpp.obj	73e1900380059564
+9	179	7163230310769746	CMakeFiles/cpp_project.dir/Asteroid.cpp.obj	1c377483ef8acfd9
+14	2302	7163184403860756	CMakeFiles/cpp_project.dir/framework.cpp.obj	5adf6d3f03162562
+2	334	7163234142546590	build.ninja	8175b88cfade3144
+1126	1294	7163230545612611	cpp_project.exe	9a2e195497ae71d9

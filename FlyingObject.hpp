@@ -1,0 +1,10 @@
+#ifndef CPP_PROJECT_FLYINGOBJECT_HPP
+#define CPP_PROJECT_FLYINGOBJECT_HPP
+
+
+class FlyingObject {
+
+};
+
+
+#endif //CPP_PROJECT_FLYINGOBJECT_HPP
