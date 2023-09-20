@@ -17,6 +17,12 @@ int main(int argc, char* argv[]) {
             exit(0);
         }
 
+        if(asteroid != nullptr) {
+            fw->DrawAsteroid(asteroid->GetX(), asteroid->GetY(), asteroid->GetSize());
+            asteroid->SetXSpeed(10);
+            asteroid->Move(width, height);
+        }
+
         if(missile != nullptr) {
             fw->DrawMissile(missile->GetX(), missile->GetY());
             if(missile->Move(width, height)) {
@@ -26,10 +32,6 @@ int main(int argc, char* argv[]) {
         }
 
         if ((asteroid != nullptr) && (missile != nullptr)) {
-            fw->DrawAsteroid(asteroid->GetX(), asteroid->GetY(), asteroid->GetSize());
-            asteroid->SetXSpeed(10);
-            asteroid->Move(width, height);
-
             if (FlyingObject::Collide(*asteroid, *missile)) {
                 std::cout << "Collision Detected" << std::endl;
                 delete asteroid;
