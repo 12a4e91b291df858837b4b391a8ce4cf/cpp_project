@@ -2,19 +2,42 @@
 #include "framework.hpp"
 #include "Asteroid.hpp"
 #include "Missile.hpp"
+#include "Spaceship.hpp"
+#include <iostream>
 
 int main(int argc, char* argv[]) {
     Framework* fw = new Framework(100, 60, 20);
     int width = fw->GetScreenWidth();
     int height = fw->GetScreenHeight();
 
-    Asteroid* asteroid = new Asteroid(0, 0, 200, 2, 2);
-    Missile* missile = new Missile(width/2, height/2, 100, 0,10);
+    Asteroid* asteroid = new Asteroid(0, 0, 200, 5, 2);
+    Missile* missile = new Missile(width/2, height/2, 20, 0,10);
+    Spaceship* spaceship = new Spaceship(width/2,height/2,50,90);
 
     while (true) {
-        if (fw->GetInput() == SDLK_ESCAPE) {
+        int input = fw->GetInput();
+        if (input == SDLK_ESCAPE) {
             std::cout << "Terminé";
             exit(0);
+        }
+
+        switch(input) {
+            case SDLK_UP:
+                std::cout << "up";
+                spaceship->SpeedUp(5);
+                break;
+            case SDLK_DOWN:
+                std::cout << "down";
+                spaceship->SpeedDown(5);
+                break;
+            case SDLK_LEFT:
+                std::cout << "left";
+                spaceship->Rotate(-5);
+                break;
+            case SDLK_RIGHT:
+                std::cout << "right";
+                spaceship->Rotate(5);
+                break;
         }
 
         if(asteroid != nullptr) {
@@ -42,6 +65,11 @@ int main(int argc, char* argv[]) {
             }
         }
 
+        if(spaceship != nullptr) {
+            fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), 0, false);
+        }
+
+        spaceship->Move(width,height);
         fw->Update();
     }
 }

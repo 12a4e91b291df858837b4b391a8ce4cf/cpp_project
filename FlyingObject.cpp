@@ -37,8 +37,6 @@ bool FlyingObject::Collide(FlyingObject o1, FlyingObject o2) {
     double differenceBetweenX = o1.GetX() - o2.GetX();
     double differenceBetweenY = o1.GetY() - o2.GetY();
     double distanceBetweenFlyingObjectsCenter = sqrt(pow(differenceBetweenX,2) + pow(differenceBetweenY,2));
-    if (distanceBetweenFlyingObjectsCenter < (o1.GetSize()/2 + o2.GetSize()/2)) {
-        return true;
-    }
-    return false;
+    return distanceBetweenFlyingObjectsCenter < (o1.GetSize()/2 + o2.GetSize()/2);
 }
+

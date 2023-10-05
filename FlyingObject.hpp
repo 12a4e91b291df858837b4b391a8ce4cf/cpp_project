@@ -32,7 +32,6 @@ class FlyingObject {
         // Renvoie : true si les deux objets se touchent, false sinon
         static bool Collide(FlyingObject o1, FlyingObject o2);
 
-
 };
 
 

@@ -15,7 +15,10 @@
             Missile.cpp
             Missile.hpp
             FlyingObject.cpp
-            FlyingObject.hpp)
+            FlyingObject.hpp
+            Spaceship.hpp
+            Spaceship.cpp
+    )
 
     # Link your executable with the necessary libraries
     target_link_libraries(cpp_project mingw32 SDL2main SDL2)
