@@ -11,8 +11,8 @@ int main(int argc, char* argv[]) {
     int height = fw->GetScreenHeight();
 
     Asteroid* asteroid = new Asteroid(0, 0, 200, 5, 2);
-    Missile* missile = new Missile(width/2, height/2, 20, 0,10);
     Spaceship* spaceship = new Spaceship(width/2,height/2,50,90, 0, 0);
+    Missile* missile = new Missile(spaceship->GetX(), spaceship->GetY(), 20, 0,10);
 
     while (true) {
         int input = fw->GetInput();
@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
                 break;
             case SDLK_DOWN:
                 std::cout << "down";
-                spaceship->SpeedDown(-2);
+                spaceship->SpeedDown(2);
                 break;
             case SDLK_LEFT:
                 std::cout << "left";
@@ -40,6 +40,16 @@ int main(int argc, char* argv[]) {
                 std::cout << "right";
                 spaceship->Rotate(10);
                 break;
+
+            case SDLK_SPACE :
+                if(missile != nullptr) {
+                    fw->DrawMissile(spaceship->GetX(), spaceship->GetY());
+                    if(missile->Move(width, height)) {
+                        delete missile;
+                        missile = nullptr;
+                    }
+                }
+                break;
         }
 
         if(asteroid != nullptr) {
@@ -48,13 +58,6 @@ int main(int argc, char* argv[]) {
             asteroid->Move(width, height);
         }
 
-        if(missile != nullptr) {
-            fw->DrawMissile(missile->GetX(), missile->GetY());
-            if(missile->Move(width, height)) {
-                delete missile;
-                missile = nullptr;
-            }
-        }
 
         if ((asteroid != nullptr) && (missile != nullptr)) {
             if (FlyingObject::Collide(*asteroid, *missile)) {

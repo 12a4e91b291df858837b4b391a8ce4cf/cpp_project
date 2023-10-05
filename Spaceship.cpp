@@ -34,16 +34,11 @@ void Spaceship::Move(double screenWidth, double screenHeight) {
 
 }
 
-void Spaceship::Move() {
-    SetX(GetX() + xSpeed);
-    SetY(GetY() + ySpeed);
-}
-
 
 void Spaceship::SpeedUp(double accelerationFactor) {
     double angleInRadian = M_PI*(this->angle-90)/180;
     double horizontalAcceleration = cos(angleInRadian) * accelerationFactor;
-    double verticalAcceleration = sin(angleInRadian) * accelerationFactor;
+    double verticalAcceleration = sin(angleInRadian) * -accelerationFactor;
 
     this->xSpeed += horizontalAcceleration;
     this->ySpeed += verticalAcceleration;
@@ -51,8 +46,8 @@ void Spaceship::SpeedUp(double accelerationFactor) {
 
 void Spaceship::SpeedDown(double decelerationFactor) {
     double angleInRadian = M_PI*(this->angle-90)/180;
-    double horizontalAcceleration = cos(angleInRadian) * decelerationFactor;
-    double verticalAcceleration = sin(angleInRadian) * decelerationFactor;
+    double horizontalAcceleration = cos(angleInRadian) * (-decelerationFactor);
+    double verticalAcceleration = sin(angleInRadian) * (decelerationFactor);
 
     this->xSpeed += horizontalAcceleration;
     this->ySpeed += verticalAcceleration;
@@ -60,7 +55,6 @@ void Spaceship::SpeedDown(double decelerationFactor) {
 
 void Spaceship::Rotate(double rAngle) {
     this->angle = (int) (this->angle + rAngle) % 360;
-
 }
 
 
