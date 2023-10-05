@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
 
     Asteroid* asteroid = new Asteroid(0, 0, 200, 5, 2);
     Missile* missile = new Missile(width/2, height/2, 20, 0,10);
-    Spaceship* spaceship = new Spaceship(width/2,height/2,50,90);
+    Spaceship* spaceship = new Spaceship(width/2,height/2,50,90, 0, 0);
 
     while (true) {
         int input = fw->GetInput();
@@ -21,22 +21,24 @@ int main(int argc, char* argv[]) {
             exit(0);
         }
 
+        spaceship->Move(width,height);
+
         switch(input) {
             case SDLK_UP:
                 std::cout << "up";
-                spaceship->SpeedUp(5);
+                spaceship->SpeedUp(2);
                 break;
             case SDLK_DOWN:
                 std::cout << "down";
-                spaceship->SpeedDown(5);
+                spaceship->SpeedDown(-2);
                 break;
             case SDLK_LEFT:
                 std::cout << "left";
-                spaceship->Rotate(-5);
+                spaceship->Rotate(-10);
                 break;
             case SDLK_RIGHT:
                 std::cout << "right";
-                spaceship->Rotate(5);
+                spaceship->Rotate(10);
                 break;
         }
 
@@ -65,11 +67,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        if(spaceship != nullptr) {
-            fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), 0, false);
-        }
-
-        spaceship->Move(width,height);
+        fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), 1, false);
         fw->Update();
     }
 }

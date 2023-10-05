@@ -3,9 +3,9 @@
 #include <iostream>
 using namespace std;
 
-Spaceship::Spaceship(double x, double y, double size, double angle) : FlyingObject(x,y,size) {
-    this->xSpeed = 0;
-    this->ySpeed = 0;
+Spaceship::Spaceship(double x, double y, double size, double angle, double xSpeed, double ySpeed) : FlyingObject(x,y,size) {
+    this->xSpeed = xSpeed;
+    this->ySpeed = ySpeed;
     this->angle = angle;
 }
 
@@ -14,8 +14,9 @@ double Spaceship::GetAngle() const {
 }
 
 void Spaceship::Move(double screenWidth, double screenHeight) {
-    SetX(GetX() + xSpeed);
-    SetY(GetY() + ySpeed);
+    double angleRad = M_PI*(this->angle-90)/180;
+    SetX(GetX() + xSpeed * cos(angleRad));
+    SetY(GetY() + ySpeed * sin(angleRad));
 
     if(GetX() < 0) {
         SetX(screenWidth);
@@ -33,6 +34,11 @@ void Spaceship::Move(double screenWidth, double screenHeight) {
 
 }
 
+void Spaceship::Move() {
+    SetX(GetX() + xSpeed);
+    SetY(GetY() + ySpeed);
+}
+
 
 void Spaceship::SpeedUp(double accelerationFactor) {
     double angleInRadian = M_PI*(this->angle-90)/180;
@@ -48,12 +54,13 @@ void Spaceship::SpeedDown(double decelerationFactor) {
     double horizontalAcceleration = cos(angleInRadian) * decelerationFactor;
     double verticalAcceleration = sin(angleInRadian) * decelerationFactor;
 
-    this->xSpeed -= horizontalAcceleration;
-    this->ySpeed -= verticalAcceleration;
+    this->xSpeed += horizontalAcceleration;
+    this->ySpeed += verticalAcceleration;
 }
 
 void Spaceship::Rotate(double rAngle) {
-    angle = (int) (angle + rAngle) % 360;
+    this->angle = (int) (this->angle + rAngle) % 360;
+
 }
 
 

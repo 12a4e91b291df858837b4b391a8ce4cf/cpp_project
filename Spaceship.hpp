@@ -15,6 +15,8 @@ private:
     // * angle d'orientation
     Spaceship(double x, double y, double size, double angle);
 
+    Spaceship(double x, double y, double size, double angle, double xSpeed, double ySpeed);
+
     //////////
     // Getters
     double GetAngle() const;
