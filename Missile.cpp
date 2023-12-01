@@ -7,7 +7,7 @@ Missile::Missile(double x, double y, double size, double speed, double angle) : 
 }
 
 bool Missile::Move(double screenWidth, double screenHeight) {
-    double angleRad = M_PI*(this->angle-90)/180;
+    double angleRad = M_PI*(this->angle-90)/180;;
     SetX(GetX() + speed * cos(angleRad));
     SetY(GetY() + speed * sin(angleRad));
 

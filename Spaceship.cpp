@@ -1,6 +1,6 @@
 #include <cmath>
 #include "Spaceship.hpp"
-#include <iostream>
+
 using namespace std;
 
 Spaceship::Spaceship(double x, double y, double size, double angle, double xSpeed, double ySpeed) : FlyingObject(x,y,size) {
@@ -14,9 +14,9 @@ double Spaceship::GetAngle() const {
 }
 
 void Spaceship::Move(double screenWidth, double screenHeight) {
-    double angleRad = M_PI*(this->angle-90)/180;
-    SetX(GetX() + xSpeed * cos(angleRad));
-    SetY(GetY() + ySpeed * sin(angleRad));
+    //double angleRad = M_PI*(this->angle-90)/180;
+    SetX(GetX() + xSpeed);
+    SetY(GetY() + ySpeed);
 
     if(GetX() < 0) {
         SetX(screenWidth);
@@ -38,7 +38,7 @@ void Spaceship::Move(double screenWidth, double screenHeight) {
 void Spaceship::SpeedUp(double accelerationFactor) {
     double angleInRadian = M_PI*(this->angle-90)/180;
     double horizontalAcceleration = cos(angleInRadian) * accelerationFactor;
-    double verticalAcceleration = sin(angleInRadian) * -accelerationFactor;
+    double verticalAcceleration = sin(angleInRadian) * accelerationFactor;
 
     this->xSpeed += horizontalAcceleration;
     this->ySpeed += verticalAcceleration;
@@ -47,7 +47,7 @@ void Spaceship::SpeedUp(double accelerationFactor) {
 void Spaceship::SpeedDown(double decelerationFactor) {
     double angleInRadian = M_PI*(this->angle-90)/180;
     double horizontalAcceleration = cos(angleInRadian) * (-decelerationFactor);
-    double verticalAcceleration = sin(angleInRadian) * (decelerationFactor);
+    double verticalAcceleration = sin(angleInRadian) * (-decelerationFactor);
 
     this->xSpeed += horizontalAcceleration;
     this->ySpeed += verticalAcceleration;
