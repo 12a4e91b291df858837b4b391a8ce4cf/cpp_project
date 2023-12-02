@@ -34,7 +34,6 @@ void Spaceship::Move(double screenWidth, double screenHeight) {
 
 }
 
-
 void Spaceship::SpeedUp(double accelerationFactor) {
     double angleInRadian = M_PI*(this->angle-90)/180;
     double horizontalAcceleration = cos(angleInRadian) * accelerationFactor;

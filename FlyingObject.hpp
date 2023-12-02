@@ -11,14 +11,14 @@ class FlyingObject {
 
     public:
         // Getters
-        double GetX();
-        double GetY();
-        double GetSize();
+        virtual double GetX();
+        virtual double GetY();
+        virtual double GetSize();
 
 
         // Setters
-        void SetX(double x);
-        void SetY(double y);
+        virtual void SetX(double x);
+        virtual void SetY(double y);
         void SetSize(double size);
 
         FlyingObject(double x, double y, double size);
