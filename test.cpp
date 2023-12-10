@@ -5,8 +5,9 @@
 #include "Asteroid.hpp"
 #include "Missile.hpp"
 #include "Spaceship.hpp"
+#include <algorithm>
 
-#define MAX_ASTEROIDS 15
+#define MAX_ASTEROIDS 5
 
 int main(int argc, char* argv[]) {
     Framework* fw = new Framework(100, 60, 20);
@@ -22,6 +23,7 @@ int main(int argc, char* argv[]) {
     //Asteroid* asteroid = new Asteroid(0, 0, 100, 2, 2);
     Spaceship* spaceship = new Spaceship(width/2,height/2,50,90, 0, 0);
     Missile* missile = nullptr;
+    int compteur = 0;
 
     while (true) {
         // DÉPLACEMENT
@@ -44,29 +46,27 @@ int main(int argc, char* argv[]) {
                 if (FlyingObject::Collide(*asteroids[i], *missile)) {
                     std::cout << "Collision Detected" << std::endl;
 
-                    // Suppression et nettoyage de l'astéroïde
+                    asteroids[i]->setIsCollided(true);
                     delete asteroids[i];
-                    asteroids.erase(asteroids.begin() + i); // Retire l'astéroïde de la liste
-                    --i; // Ajustez l'indice après avoir retiré un élément
+                    asteroids.erase(asteroids.begin() + i);
+                    --i;// pour pas que la liste soit décalée
+                    //asteroids[i] = nullptr;
 
-                    // Suppression et nettoyage du missile
+                    std::cout << "numbers of remaning asteroids :" << asteroids.size() << std::endl;
+
                     delete missile;
                     missile = nullptr;
-
-                    std::cout << "Objects deleted" << std::endl;
-
-                    break; // Sortez de la boucle si une collision a été traitée
+                    break;
                 }
             }
         }
 
         //CREATION DES ASTEROIDES
-        if (asteroids.size() < MAX_ASTEROIDS) {  // MAX_ASTEROIDS est à définir en fonction de votre jeu
+        while(compteur < MAX_ASTEROIDS) {
             std::uniform_int_distribution<> zoneDistr(0, 7);
             int zone = zoneDistr(gen);
-            if (zone >= 4) zone++;  // Ajuster pour le trou central
+            if (zone >= 4) zone++;
 
-            // Déterminer les coordonnées basées sur la zone
             int gridX = zone % 3;
             int gridY = zone / 3;
             std::uniform_real_distribution<> xDistr(gridX * width / 3, (gridX + 1) * width / 3);
@@ -77,24 +77,21 @@ int main(int argc, char* argv[]) {
             std::uniform_int_distribution<> angleDistr(-180, 180);
             int asteroidAngle = angleDistr(gen);
 
-            double asteroidSpeed = 2;  // La vitesse peut être fixe ou aléatoire
+            double asteroidSpeed = 2;//vitesse fixe ou random
             double asteroidXSpeed = asteroidSpeed * std::cos(asteroidAngle * M_PI / 180.0);
             double asteroidYSpeed = asteroidSpeed * std::sin(asteroidAngle * M_PI / 180.0);
 
             asteroids.push_back(new Asteroid(asteroidX, asteroidY, 100, asteroidXSpeed, asteroidYSpeed));
+            compteur++;
         }
-
 
         // AFFICHAGE
         fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), 1, false);
 
-        /*
-        if(asteroid != nullptr) {
-            fw->DrawAsteroid(asteroid->GetX(), asteroid->GetY(), asteroid->GetSize());
-        }
-        */
-        for (auto & asteroid : asteroids) {
-            fw->DrawAsteroid(asteroid->GetX(), asteroid->GetY(), asteroid->GetSize());
+        for (size_t i = 0; i < asteroids.size(); ++i) {
+            if (asteroids[i] != nullptr && !asteroids[i]->GetIsCollided()) {
+                fw->DrawAsteroid(asteroids[i]->GetX(), asteroids[i]->GetY(), asteroids[i]->GetSize());
+            }
         }
 
         if(missile != nullptr) { //peut pas dessiner si c'est un nul pointeur
@@ -103,26 +100,22 @@ int main(int argc, char* argv[]) {
 
         // CLAVIER
         int input = fw->GetInput();
-        if (input == SDLK_ESCAPE) {
+        if (input == SDLK_ESCAPE || asteroids.empty()) {
             std::cout << "Terminé";
             exit(0);
         }
 
         switch(input) {
             case SDLK_UP:
-                std::cout << "up";
                 spaceship->SpeedUp(0.15);
                 break;
             case SDLK_DOWN:
-                std::cout << "down";
                 spaceship->SpeedDown(0.15);
                 break;
             case SDLK_LEFT:
-                std::cout << "left";
                 spaceship->Rotate(-10);
                 break;
             case SDLK_RIGHT:
-                std::cout << "right";
                 spaceship->Rotate(10);
                 break;
             case SDLK_SPACE :

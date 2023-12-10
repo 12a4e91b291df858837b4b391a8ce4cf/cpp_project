@@ -9,8 +9,18 @@
 // * screenWidth, screenHeight : taille de l'écran
 void Asteroid::Move(double screenWidth, double screenHeight) {
     Move();
-    SetX( (int)GetX() % (int)screenWidth );
-    SetY( (int)GetY() % (int)screenHeight );
+
+    if (GetX() < 0) {
+        SetX(screenWidth + GetX());
+    } else if (GetX() > screenWidth) {
+        SetX(GetX() - screenWidth);
+    }
+
+    if (GetY() < 0) {
+        SetY(screenHeight + GetY());
+    } else if (GetY() > screenHeight) {
+        SetY(GetY() - screenHeight);
+    }
 }
 
 void Asteroid::Move() {
@@ -38,4 +48,12 @@ double Asteroid::GetXSpeed() const {
 
 double Asteroid::GetYSpeed() const {
     return this->ySpeed;
+}
+
+bool Asteroid::GetIsCollided() const {
+    return this->isCollided;
+};
+
+void Asteroid::setIsCollided(bool status) {
+    this->isCollided = status;
 }
