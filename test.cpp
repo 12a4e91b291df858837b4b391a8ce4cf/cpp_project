@@ -5,7 +5,7 @@
 #include "Asteroid.hpp"
 #include "Missile.hpp"
 #include "Spaceship.hpp"
-#include <algorithm>
+#include <chrono>
 
 #define MAX_ASTEROIDS 5
 
@@ -20,12 +20,22 @@ int main(int argc, char* argv[]) {
 
     std::vector<Asteroid*> asteroids; //stockage
 
-    //Asteroid* asteroid = new Asteroid(0, 0, 100, 2, 2);
+    //instances
     Spaceship* spaceship = new Spaceship(width/2,height/2,50,90, 0, 0);
     Missile* missile = nullptr;
+
+    //utilitaire
+    auto lastTime = std::chrono::high_resolution_clock::now();
     int compteur = 0;
 
     while (true) {
+        //CLOCK ACTUELLE ET CREATION DU DELTA TEMPS
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float deltaTime = std::chrono::duration<float, std::milli>(currentTime - lastTime).count();
+        lastTime = currentTime;
+
+        spaceship->updateState(deltaTime);
+
         // DÉPLACEMENT
         spaceship->Move(width,height);
 
@@ -64,8 +74,9 @@ int main(int argc, char* argv[]) {
         //COLLISION ENTRE LES ASTEROIDES ET LE SPACESHIP
         for (size_t i = 0; i < asteroids.size(); i++) {
             if(asteroids[i] != nullptr) {
-                if(FlyingObject::Collide(*asteroids[i], *spaceship)) {
+                if(FlyingObject::Collide(*asteroids[i], *spaceship) && !spaceship->GetIsInvulnerable()) {
                     spaceship->destroyShield();
+                    spaceship->hitByAnAsteroid();
                     std::cout << "Spaceship hit, Shield level :" << spaceship->GetShieldLevel() << std::endl;
 
                     asteroids[i]->setIsCollided(true);
@@ -101,7 +112,7 @@ int main(int argc, char* argv[]) {
         }
 
         // AFFICHAGE
-        fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), spaceship->GetShieldLevel(), false);
+        fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), spaceship->GetShieldLevel(), spaceship->GetWarnUser());
 
         for (size_t i = 0; i < asteroids.size(); ++i) {
             if (asteroids[i] != nullptr && !asteroids[i]->GetIsCollided()) {

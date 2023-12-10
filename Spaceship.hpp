@@ -7,6 +7,9 @@ private:
     double xSpeed;
     double ySpeed;
     int shieldLevel;
+    bool warnUser;
+    bool isInvulnerable;
+    int invulnerabilityTimer;
 
 public:
     ///////////////
@@ -25,6 +28,10 @@ public:
 
     int GetShieldLevel();
 
+    bool GetWarnUser() const;
+
+    bool GetIsInvulnerable() const;
+
     ///////////////////////
     // Accélère le vaisseau
     // -------
@@ -37,6 +44,8 @@ public:
     // * decelerationFactor : le facteur de décéleration appliqué
     void SpeedDown(double decelerationFactor);
 
+    void limitTheSpeed();
+
     ///////////////////////////
     // Fait pivoter le vaisseau
     // -------
@@ -48,6 +57,10 @@ public:
     void Move();
 
     void destroyShield();
+
+    void hitByAnAsteroid();
+
+    void updateState(int delaTime);
 };
 
 #endif //CPP_PROJECT_SPACESHIP_HPP

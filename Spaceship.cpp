@@ -1,5 +1,6 @@
 #include <cmath>
 #include "Spaceship.hpp"
+#define MAX_SPEED 5.0
 
 using namespace std;
 
@@ -12,6 +13,18 @@ Spaceship::Spaceship(double x, double y, double size, double angle, double xSpee
 
 double Spaceship::GetAngle() const {
     return this->angle;
+}
+
+int Spaceship::GetShieldLevel() {
+    return this->shieldLevel;
+}
+
+bool Spaceship::GetIsInvulnerable() const {
+    return this->isInvulnerable;
+}
+
+bool Spaceship::GetWarnUser() const {
+    return this->warnUser;
 }
 
 void Spaceship::Move(double screenWidth, double screenHeight) {
@@ -42,6 +55,8 @@ void Spaceship::SpeedUp(double accelerationFactor) {
 
     this->xSpeed += horizontalAcceleration;
     this->ySpeed += verticalAcceleration;
+
+    limitTheSpeed();
 }
 
 void Spaceship::SpeedDown(double decelerationFactor) {
@@ -51,18 +66,42 @@ void Spaceship::SpeedDown(double decelerationFactor) {
 
     this->xSpeed += horizontalAcceleration;
     this->ySpeed += verticalAcceleration;
+
+    limitTheSpeed();
+}
+
+void Spaceship::limitTheSpeed() {
+    double currentSpeed = sqrt(xSpeed * xSpeed + ySpeed * ySpeed);
+    if (currentSpeed > MAX_SPEED) {
+        double scaleTheSpeedToMAX_SPEED = MAX_SPEED/currentSpeed;
+        xSpeed *= scaleTheSpeedToMAX_SPEED;
+        ySpeed *= scaleTheSpeedToMAX_SPEED;
+    }
 }
 
 void Spaceship::Rotate(double rAngle) {
     this->angle = (int) (this->angle + rAngle) % 360;
 }
 
-int Spaceship::GetShieldLevel() {
-    return this->shieldLevel;
-}
-
 void Spaceship::destroyShield() {
     shieldLevel--;
 }
 
+void Spaceship::hitByAnAsteroid() {
+    warnUser = true;
 
+    if(!isInvulnerable) {
+        isInvulnerable = true;
+        invulnerabilityTimer = 3000;
+    }
+}
+
+void Spaceship::updateState(int delaTime) {
+    if(warnUser) {
+        invulnerabilityTimer-=delaTime;
+        if(invulnerabilityTimer <= 0) {
+            warnUser = false;
+            isInvulnerable = false;
+        }
+    }
+}
