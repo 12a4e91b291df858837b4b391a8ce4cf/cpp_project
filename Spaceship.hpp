@@ -4,9 +4,11 @@
 class Spaceship : public FlyingObject {
 private:
     double angle;
-        double xSpeed;
-        double ySpeed;
-    public:
+    double xSpeed;
+    double ySpeed;
+    int shieldLevel;
+
+public:
     ///////////////
     // Constructeur
     // -------
@@ -20,6 +22,8 @@ private:
     //////////
     // Getters
     double GetAngle() const;
+
+    int GetShieldLevel();
 
     ///////////////////////
     // Accélère le vaisseau
@@ -42,6 +46,8 @@ private:
     void Move(double screenWidth, double screenHeight);
 
     void Move();
+
+    void destroyShield();
 };
 
 #endif //CPP_PROJECT_SPACESHIP_HPP

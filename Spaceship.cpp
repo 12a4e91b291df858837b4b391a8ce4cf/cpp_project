@@ -7,6 +7,7 @@ Spaceship::Spaceship(double x, double y, double size, double angle, double xSpee
     this->xSpeed = xSpeed;
     this->ySpeed = ySpeed;
     this->angle = angle;
+    this->shieldLevel = 2;
 }
 
 double Spaceship::GetAngle() const {
@@ -54,6 +55,14 @@ void Spaceship::SpeedDown(double decelerationFactor) {
 
 void Spaceship::Rotate(double rAngle) {
     this->angle = (int) (this->angle + rAngle) % 360;
+}
+
+int Spaceship::GetShieldLevel() {
+    return this->shieldLevel;
+}
+
+void Spaceship::destroyShield() {
+    shieldLevel--;
 }
 
 

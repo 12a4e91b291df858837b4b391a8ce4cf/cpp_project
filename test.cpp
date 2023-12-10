@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
             asteroid->Move(width, height);
         }
 
-        //COLLISION
+        //COLLISION ENTRE LES ASTEROIDES ET LES MISSILES
         for (size_t i = 0; i < asteroids.size(); ++i) {
             if (missile != nullptr && asteroids[i] != nullptr) {
                 if (FlyingObject::Collide(*asteroids[i], *missile)) {
@@ -57,6 +57,21 @@ int main(int argc, char* argv[]) {
                     delete missile;
                     missile = nullptr;
                     break;
+                }
+            }
+        }
+
+        //COLLISION ENTRE LES ASTEROIDES ET LE SPACESHIP
+        for (size_t i = 0; i < asteroids.size(); i++) {
+            if(asteroids[i] != nullptr) {
+                if(FlyingObject::Collide(*asteroids[i], *spaceship)) {
+                    spaceship->destroyShield();
+                    std::cout << "Spaceship hit, Shield level :" << spaceship->GetShieldLevel() << std::endl;
+
+                    asteroids[i]->setIsCollided(true);
+                    delete asteroids[i];
+                    asteroids.erase(asteroids.begin() + i);
+                    --i;// pour pas que la liste soit décalée
                 }
             }
         }
@@ -86,7 +101,7 @@ int main(int argc, char* argv[]) {
         }
 
         // AFFICHAGE
-        fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), 1, false);
+        fw->DrawShip(spaceship->GetX(), spaceship->GetY(), spaceship->GetAngle(), spaceship->GetShieldLevel(), false);
 
         for (size_t i = 0; i < asteroids.size(); ++i) {
             if (asteroids[i] != nullptr && !asteroids[i]->GetIsCollided()) {
@@ -100,7 +115,7 @@ int main(int argc, char* argv[]) {
 
         // CLAVIER
         int input = fw->GetInput();
-        if (input == SDLK_ESCAPE || asteroids.empty()) {
+        if (input == SDLK_ESCAPE || asteroids.empty() || spaceship->GetShieldLevel() < 0) {
             std::cout << "Terminé";
             exit(0);
         }
