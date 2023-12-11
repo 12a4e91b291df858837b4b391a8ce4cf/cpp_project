@@ -1,4 +1,10 @@
 #include "Asteroid.hpp"
+#include <random>
+#include <vector>
+#include <iostream>
+
+#define NUMBER_OF_ASTEROIDS_AFTER_DIVISION 3
+#define MINIMUM_SIZE 50
 
 ///////////////////////////////////////
 // Déplacement de l'objet avec réentrée
@@ -7,6 +13,11 @@
 // de l'autre côté
 // -------
 // * screenWidth, screenHeight : taille de l'écran
+std::random_device random;
+std::mt19937 gen(random());
+
+std::vector<Asteroid*> asteroids;
+
 void Asteroid::Move(double screenWidth, double screenHeight) {
     Move();
 
@@ -56,4 +67,24 @@ bool Asteroid::GetIsCollided() const {
 
 void Asteroid::setIsCollided(bool status) {
     this->isCollided = status;
+}
+
+void Asteroid::divideIntoMultipleAsteroids(std::vector<Asteroid*>& asteroidsList) {
+    if (this->isCollided) {
+        for (int i = 0; i < NUMBER_OF_ASTEROIDS_AFTER_DIVISION ; ++i) {
+            double newSizeOfAsteroid = this->GetSize() / 2;
+
+            std::uniform_int_distribution<> angleDistr(-180, 180);
+            int asteroidAngle = angleDistr(gen);
+            double newAsteroidSpeedFactor = 1.5;
+
+            double asteroidXSpeed = newAsteroidSpeedFactor * std::cos(asteroidAngle * M_PI / 180.0);
+            double asteroidYSpeed = newAsteroidSpeedFactor * std::sin(asteroidAngle * M_PI / 180.0);
+
+            std::cout << "Creating new asteroids from asteroid at: " << this->GetX() << ", " << this->GetY() << std::endl;
+            asteroidsList.push_back(new Asteroid(this->GetX(), this->GetY(), newSizeOfAsteroid, asteroidXSpeed, asteroidYSpeed));
+            std::cout << "New asteroids count: " << asteroidsList.size() << std::endl;
+        }
+    } else
+        std::cout << "too small" << std::endl;
 }

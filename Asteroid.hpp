@@ -1,7 +1,7 @@
 #ifndef CPP_PROJECT_ASTEROID_HPP
 #define CPP_PROJECT_ASTEROID_HPP
 
-
+#include <vector>
 #include "FlyingObject.hpp"
 
 class Asteroid : public FlyingObject {
@@ -20,6 +20,7 @@ class Asteroid : public FlyingObject {
         void SetYSpeed(double ySpeed);
         bool GetIsCollided() const;
         void setIsCollided(bool status);
+        void divideIntoMultipleAsteroids(std::vector<Asteroid*>& asteroidsList);
 };
 
 
