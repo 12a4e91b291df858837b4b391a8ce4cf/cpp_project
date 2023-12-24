@@ -1,27 +1,34 @@
 #include "controller.hpp"
 #include <iostream>
+#define NUMBER_OF_DESIRED_ASTEROIDS 5
 
 Controller::Controller(int fps, int shipSize, int missileSize) {
     this->framework = new Framework(fps, shipSize, missileSize);
-    //this->model = new Model();
-    //this->view = new View();
+    this->model = new Model(framework->GetScreenWidth(), framework->GetScreenHeight());
+    this->view = new View(fps, shipSize, missileSize);
 };
 
 void Controller::LaunchGame() {
-    this->model = new Model(framework->GetScreenWidth(), framework->GetScreenHeight());
+    model->createAsteroids(NUMBER_OF_DESIRED_ASTEROIDS);
 
+    //Boucle principale du jeu
     while(true) {
         model->updateStateOfSpaceship();
 
+        model->moveSpaceshipAndMissile();
+        model->moveAsteroids();
+
+        model->collideBetweenAsteroidsAndMissiles();
+        model->collideBetweenAsteroidsAndSpaceship();
+
+        view->drawObjects(model->getAllFlyingObjects());
+
         int input = framework->GetInput();
-        /*
-        if (input == SDLK_ESCAPE || asteroids.empty() || spaceship->GetShieldLevel() < 0) {
-            std::cout << "Terminé";
+        if (input == SDLK_ESCAPE || model->isShieldLevelBelowZero()) {
+            std::cout << "GAME FINISHED, YOU LOST";
             exit(0);
-        }
-         */
-        if (input == SDLK_ESCAPE) {
-            std::cout << "Terminé";
+        } else if (model->isAsteroidEmpty()) {
+            std::cout << "GAME FINISHED, YOU WON";
             exit(0);
         }
 
@@ -44,6 +51,6 @@ void Controller::LaunchGame() {
 
         }
 
-        model->updateGame();
+        view->updateDisplay();
     }
 }
