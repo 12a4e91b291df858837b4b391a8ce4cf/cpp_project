@@ -1,6 +1,6 @@
 #include "controller.hpp"
 #include <iostream>
-#define NUMBER_OF_DESIRED_ASTEROIDS 5
+#define NUMBER_OF_DESIRED_ASTEROIDS 4
 
 Controller::Controller(int fps, int shipSize, int missileSize) {
     this->framework = new Framework(fps, shipSize, missileSize);

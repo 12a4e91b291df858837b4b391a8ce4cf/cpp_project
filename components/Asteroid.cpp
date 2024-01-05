@@ -3,7 +3,7 @@
 #include <vector>
 #include <iostream>
 
-#define NUMBER_OF_ASTEROIDS_AFTER_DIVISION 3
+#define NUMBER_OF_ASTEROIDS_AFTER_DIVISION 2
 #define MINIMUM_SIZE 50
 
 ///////////////////////////////////////
@@ -81,12 +81,9 @@ void Asteroid::divideIntoMultipleAsteroids(std::vector<Asteroid*>& asteroidsList
             double asteroidXSpeed = newAsteroidSpeedFactor * std::cos(asteroidAngle * M_PI / 180.0);
             double asteroidYSpeed = newAsteroidSpeedFactor * std::sin(asteroidAngle * M_PI / 180.0);
 
-            std::cout << "Creating new asteroids from asteroid at: " << this->GetX() << ", " << this->GetY() << std::endl;
             asteroidsList.push_back(new Asteroid(this->GetX(), this->GetY(), newSizeOfAsteroid, asteroidXSpeed, asteroidYSpeed));
-            std::cout << "New asteroids count: " << asteroidsList.size() << std::endl;
         }
-    } else
-        std::cout << "too small" << std::endl;
+    }
 }
 
 std::string Asteroid::getTypeName() {
